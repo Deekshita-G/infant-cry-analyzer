@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infant Cry Analyzer</title>
+
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://unpkg.com/wavesurfer.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-content">
+    <span>👶 Infant Cry Analyzer</span>
+    <img src="https://drive.google.com/uc?export=view&id=1YaAa1WKTedVQMU165qSBbvlMbXJdpVB6" width="180">
+  </div>
+</nav>
+
+<div class="tabs">
+  <button onclick="showScreen('inputScreen')">Home</button>
+  <button onclick="showScreen('historyScreen')">History</button>
+  <button onclick="showScreen('aboutScreen')">About</button>
+</div>
+
+<div class="main-card">
+
+<!-- INPUT -->
+<div id="inputScreen" class="screen">
+
+<div class="upload-row">
+  <input type="file" id="audioFile">
+  <button id="recordBtn">🎤</button>
+  <button id="stopBtn" style="display:none;">⏹</button>
+</div>
+
+<button class="analyze-btn" onclick="analyzeCry()">Analyze</button>
+
+<div id="waveform"></div>
+
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen" class="screen hidden">
+  <div class="spinner"></div>
+  <p>Analyzing...</p>
+</div>
+
+<!-- RESULT -->
+<div id="resultScreen" class="screen hidden">
+
+<img id="resultImage" width="180">
+
+<h3 id="cryType"></h3>
+<p id="cause"></p>
+<p><b>Cry Intensity:</b> <span id="confValue"></span></p>
+
+<button onclick="showScreen('inputScreen')">⬅ Back</button>
+
+</div>
+
+<!-- HISTORY -->
+<div id="historyScreen" class="screen hidden">
+  <h3>History</h3>
+  <ul id="historyList"></ul>
+</div>
+
+<!-- ABOUT -->
+<div id="aboutScreen" class="screen hidden">
+  <h3>About</h3>
+  <p>
+    This system analyzes infant cry audio using machine learning to detect asphyxia and predict possible causes.
+  </p>
+</div>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
