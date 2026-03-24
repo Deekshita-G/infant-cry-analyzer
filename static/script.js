@@ -58,21 +58,31 @@ data.possible_cause || "";
 
 let img = document.getElementById("resultImage");
 
-if(data.classification && data.classification.includes("Asphyxia")){
-    img.src = "https://drive.google.com/uc?export=view&id=119bLzdwKdmaceJlYkk6tnzIj8mBpzzAU";
+// Always show image block
+img.style.display = "block";
+
+// Default image
+let imageURL = "https://drive.google.com/uc?export=view&id=1hniNIGjqSVXnZTlzqKMsSV8DmeOTxBCI"; // normal
+
+if(data.classification && data.classification.toLowerCase().includes("asphyxia")){
+    imageURL = "https://drive.google.com/uc?export=view&id=119bLzdwKdmaceJlYkk6tnzIj8mBpzzAU";
 }
-else if(data.possible_cause === "Hungry"){
-    img.src = "https://drive.google.com/uc?export=view&id=197WmmlOml83iXBys0qFruiAkFNhELu0s";
+else if(data.possible_cause){
+    let cause = data.possible_cause.toLowerCase();
+
+    if(cause.includes("hungry")){
+        imageURL = "https://drive.google.com/uc?export=view&id=197WmmlOml83iXBys0qFruiAkFNhELu0s";
+    }
+    else if(cause.includes("sleepy")){
+        imageURL = "https://drive.google.com/uc?export=view&id=1EQT_bxnLh9aGM4Mm2cXtKW92ypc1YQYm";
+    }
+    else if(cause.includes("tired")){
+        imageURL = "https://drive.google.com/uc?export=view&id=1bvC6UsbYjt3dm-_mSp3PcpW1NzikODe6";
+    }
 }
-else if(data.possible_cause === "Sleepy"){
-    img.src = "https://drive.google.com/uc?export=view&id=1EQT_bxnLh9aGM4Mm2cXtKW92ypc1YQYm";
-}
-else if(data.possible_cause === "Tired"){
-    img.src = "https://drive.google.com/uc?export=view&id=1bvC6UsbYjt3dm-_mSp3PcpW1NzikODe6";
-}
-else{
-    img.src = "https://drive.google.com/uc?export=view&id=1hniNIGjqSVXnZTlzqKMsSV8DmeOTxBCI";
-}}
+
+// Apply image
+img.src = imageURL;}
 // HISTORY
 function saveHistory(data){
 
@@ -146,3 +156,4 @@ mediaRecorder.stop();
 recordBtn.style.display="inline-block";
 stopBtn.style.display="none";
 };
+console.log(data);
