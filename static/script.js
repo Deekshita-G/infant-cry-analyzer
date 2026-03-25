@@ -81,32 +81,26 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("cause").innerText =
             data.possible_cause || "";
 
-        let img = document.getElementById("resultImage");
-        img.style.display = "block";
-
-        // LOCAL IMAGES (IMPORTANT)
-        let imageURL = "/static/images/normal.jpeg";
+        let imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/normal.jpeg";
 
         let classification = (data.classification || "").toLowerCase();
         let cause = (data.possible_cause || "").toLowerCase();
 
         if (classification.includes("asphyxia")) {
-            imageURL = "/static/images/asphyxia.jpeg";
+            imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/asphyxia.jpeg";
         }
         else if (cause.includes("hungry")) {
-            imageURL = "/static/images/hungry.jpeg";
+            imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/hungry.jpeg";
         }
         else if (cause.includes("sleepy")) {
-            imageURL = "/static/images/sleepy.jpeg";
+            imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/sleepy.jpeg";
         }
         else if (cause.includes("tired")) {
-            imageURL = "/static/images/tired.jpeg";
+            imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/tired.jpeg";
         }
 
-        img.onerror = function () {
-            img.src = "https://via.placeholder.com/300";
-        };
-
+        let img = document.getElementById("resultImage");
+        img.style.display = "block";
         img.src = imageURL;
     }
 

@@ -6,7 +6,7 @@
 <title>Infant Cry Analyzer</title>
 
 <link rel="stylesheet" href="/static/style.css">
-<script src="/static/wavesurfer.js"></script>
+
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 <nav class="navbar">
   <div class="nav-content">
     <span>👶 Infant Cry Analyzer</span>
-    <img src="https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/baby.jpeg" width="100">
+    <img src="https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/baby.jpeg" class="nav-img">
   </div>
 </nav>
 
@@ -29,15 +29,15 @@
 <!-- INPUT -->
 <div id="inputScreen" class="screen">
 
-<div class="upload-row">
-  <input type="file" id="audioFile">
-  <button id="recordBtn">🎤</button>
-  <button id="stopBtn" style="display:none;">⏹</button>
-</div>
+  <div class="upload-row">
+    <input type="file" id="audioFile">
+    <button id="recordBtn">🎤</button>
+    <button id="stopBtn" style="display:none;">⏹</button>
+  </div>
 
-<button class="analyze-btn" onclick="analyzeCry()">Analyze</button>
+  <button class="analyze-btn" onclick="analyzeCry()">Analyze</button>
 
-<div id="waveform"></div>
+  <div id="waveform"></div>
 
 </div>
 
@@ -50,13 +50,13 @@
 <!-- RESULT -->
 <div id="resultScreen" class="screen hidden">
 
-<img id="resultImage" style="display:none;" alt="Cry result image">
+  <img id="resultImage" style="display:none;" alt="Cry result image">
 
-<h3 id="cryType"></h3>
-<p id="cause"></p>
-<p><b>Cry Intensity:</b> <span id="confValue"></span></p>
+  <h3 id="cryType"></h3>
+  <p id="cause"></p>
+  <p><b>Cry Intensity:</b> <span id="confValue"></span></p>
 
-<button onclick="showScreen('inputScreen')">⬅ Back</button>
+  <button onclick="showScreen('inputScreen')">⬅ Back</button>
 
 </div>
 
@@ -76,6 +76,9 @@
 
 </div>
 
+<!-- ✅ SCRIPTS AT BOTTOM -->
+<script src="/static/js/wavesurfer.js"></script>
 <script src="/static/script.js"></script>
+
 </body>
 </html>
