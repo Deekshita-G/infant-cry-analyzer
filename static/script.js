@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ===== INIT WAVESURFER =====
     const wavesurfer = WaveSurfer.create({
         container: "#waveform",
         waveColor: "#90cdf4",
@@ -8,17 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
         height: 80
     });
 
-    // ===== VARIABLES =====
     let history = [];
     const MAX_HISTORY = 5;
 
     const audioInput = document.getElementById("audioFile");
     const recordBtn = document.getElementById("recordBtn");
     const stopBtn = document.getElementById("stopBtn");
-
-    let mediaRecorder;
-    let audioChunks = [];
-    let timer;
 
     // ===== SCREEN SWITCH =====
     window.showScreen = function (id) {
@@ -118,72 +112,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         history.forEach(item => {
             let li = document.createElement("li");
-
             li.innerText = `${item.classification || "Unknown"} - ${((item.confidence || 0) * 100).toFixed(1)}%`;
-
             list.appendChild(li);
         });
     }
 
-    // ===== RECORDING =====
-    recordBtn.onclick = async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // ===== 🔥 ANDROID MIC INTEGRATION =====
 
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.start();
-
-            audioChunks = [];
-
-            timer = setTimeout(() => {
-                if (mediaRecorder.state === "recording") {
-                    mediaRecorder.stop();
-                }
-            }, 25000);
-
-            recordBtn.style.display = "none";
-            stopBtn.style.display = "inline-block";
-
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-
-            mediaRecorder.onstop = async () => {
-
-                const blob = new Blob(audioChunks, { type: "audio/webm" });
-
-                wavesurfer.loadBlob(blob);
-
-                showScreen("loadingScreen");
-
-                const formData = new FormData();
-                formData.append("file", blob, "recording.webm");
-
-                const res = await fetch("/predict", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const data = await res.json();
-
-                updateUI(data);
-                saveHistory(data);
-
-                showScreen("resultScreen");
-            };
-
-        } catch (err) {
-            console.error("Mic error:", err);
-            alert("Microphone access denied!");
+    recordBtn.onclick = () => {
+        if (window.Android) {
+            Android.startRecording();
         }
+        recordBtn.style.display = "none";
+        stopBtn.style.display = "inline-block";
     };
 
-    // ===== STOP RECORD =====
     stopBtn.onclick = () => {
-        clearTimeout(timer);
-
-        if (mediaRecorder && mediaRecorder.state === "recording") {
-            mediaRecorder.stop();
+        if (window.Android) {
+            Android.stopRecording();
         }
-
         recordBtn.style.display = "inline-block";
         stopBtn.style.display = "none";
     };
