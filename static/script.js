@@ -62,27 +62,36 @@ let img = document.getElementById("resultImage");
 img.style.display = "block";
 
 // Default image
-let imageURL = "https://drive.google.com/uc?export=view&id=1hniNIGjqSVXnZTlzqKMsSV8DmeOTxBCI"; // normal
+let img = document.getElementById("resultImage");
 
-if(data.classification && data.classification.toLowerCase().includes("asphyxia")){
-    imageURL = "https://drive.google.com/uc?export=view&id=119bLzdwKdmaceJlYkk6tnzIj8mBpzzAU";
+img.style.display = "block";
+
+// DEFAULT
+let imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/normal.jpeg";
+
+let classification = (data.classification || "").toLowerCase();
+let cause = (data.possible_cause || "").toLowerCase();
+
+if (classification.includes("asphyxia")) {
+    imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/asphyxia.jpeg";
 }
-else if(data.possible_cause){
-    let cause = data.possible_cause.toLowerCase();
-
-    if(cause.includes("hungry")){
-        imageURL = "https://drive.google.com/uc?export=view&id=197WmmlOml83iXBys0qFruiAkFNhELu0s";
-    }
-    else if(cause.includes("sleepy")){
-        imageURL = "https://drive.google.com/uc?export=view&id=1EQT_bxnLh9aGM4Mm2cXtKW92ypc1YQYm";
-    }
-    else if(cause.includes("tired")){
-        imageURL = "https://drive.google.com/uc?export=view&id=1bvC6UsbYjt3dm-_mSp3PcpW1NzikODe6";
-    }
+else if (cause.includes("hungry")) {
+    imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/hungry.jpeg";
+}
+else if (cause.includes("sleepy")) {
+    imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/sleepy.jpeg";
+}
+else if (cause.includes("tired")) {
+    imageURL = "https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/tired.jpeg";
 }
 
-// Apply image
-img.src = imageURL;}
+// fallback (important)
+img.onerror = function () {
+    console.log("Image failed, fallback triggered");
+    img.src = "https://via.placeholder.com/300";
+};
+
+img.src = imageURL;
 // HISTORY
 function saveHistory(data){
 
@@ -156,4 +165,4 @@ mediaRecorder.stop();
 recordBtn.style.display="inline-block";
 stopBtn.style.display="none";
 };
-console.log(data);
+}
