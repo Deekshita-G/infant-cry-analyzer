@@ -7,3 +7,4 @@ joblib
 pydub
 soundfile
 scipy
+gunicorn
