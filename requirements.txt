@@ -1,7 +1,9 @@
 flask
+flask-cors
 numpy
 librosa
+scikit-learn
 joblib
 pydub
-scikit-learn
 soundfile
+scipy

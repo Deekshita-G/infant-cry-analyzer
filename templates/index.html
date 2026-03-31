@@ -1,84 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Infant Cry Analyzer</title>
-
-<link rel="stylesheet" href="/static/style.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="AI-powered infant cry analysis for babies under one year. Assistive only—not medical advice."/>
+  <title>Infant Cry Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/style.css?v=5" />
 </head>
-
 <body>
 
-<nav class="navbar">
-  <div class="nav-content">
-    <span>👶 Infant Cry Analyzer</span>
-    <img src="https://raw.githubusercontent.com/Deekshita-G/infant-cry-classification/main/baby.jpeg" class="nav-img">
-  </div>
-</nav>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
-<div class="tabs">
-  <button onclick="showScreen('inputScreen')">Home</button>
-  <button onclick="showScreen('historyScreen')">History</button>
-  <button onclick="showScreen('aboutScreen')">About</button>
-</div>
+  <header class="site-header">
+    <div class="header-top">
+      <a href="#" class="brand" data-page="home" aria-label="Infant Cry Analyzer home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 4c-2.5 0-4 1.8-4 3.8 0 .9.4 1.8 1 2.4-.7.6-1 1.4-1 2.3 0 2 1.6 3.6 3.6 3.8v3.7h1.8v-3.7c2-.2 3.6-1.8 3.6-3.8 0-.9-.3-1.7-1-2.3.6-.6 1-1.5 1-2.4C16.5 5.8 14.5 4 12 4Z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">Infant Cry Analyzer</span>
+          <span class="brand-sub">Under 12 months · Care-first</span>
+        </span>
+      </a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Open menu">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+    <nav class="site-nav" id="siteNav" aria-label="Main">
+      <button type="button" class="nav-tab" data-page="home" data-nav="home">
+        <span class="nav-tab-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        Home
+      </button>
+      <button type="button" class="nav-tab" data-page="analyze" data-nav="analyze">
+        <span class="nav-tab-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></span>
+        Analyze Cry
+      </button>
+      <button type="button" class="nav-tab" data-page="history" data-nav="history">
+        <span class="nav-tab-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        History
+      </button>
+      <button type="button" class="nav-tab" data-page="about" data-nav="about">
+        <span class="nav-tab-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+        About
+      </button>
+      <button type="button" class="nav-tab" data-page="results" data-nav="results">
+        <span class="nav-tab-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+        Results
+      </button>
+    </nav>
+  </header>
 
-<div class="main-card">
+  <main id="main-content" class="main-shell">
 
-<!-- INPUT -->
-<div id="inputScreen" class="screen">
+    <!-- ——— HOME ——— -->
+    <section id="page-home" class="page" aria-labelledby="home-heading">
+      <div class="home-hero">
+        <div class="home-hero-copy">
+          <h1 id="home-heading" class="home-title">Infant Cry Analyzer</h1>
+          <p class="home-tagline">AI-powered infant cry analysis and care assistance</p>
+          <p class="home-age-notice">
+            <span class="pill pill-sky">Important</span>
+            This application is intended <strong>only for infants below 1 year of age</strong>. It supports parents with ML-assisted audio checks and gentle guidance—it is <strong>not a substitute for medical advice</strong>.
+          </p>
+        </div>
+        <div class="home-hero-visual">
+          <img
+            class="home-hero-img"
+            src=""
+            alt="Illustration of a baby"
+            width="400"
+            height="300"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='/static/illustrations/general.svg';"
+          />
+        </div>
+      </div>
 
-  <div class="upload-row">
-    <input type="file" id="audioFile">
-    <button id="recordBtn">🎤</button>
-    <button id="stopBtn" style="display:none;">⏹</button>
-  </div>
+      <div class="card home-action-card">
+        <h2 class="card-headline">Analyze your baby&rsquo;s cry</h2>
+        <p class="card-sub">Upload a short clip or record from your microphone, then run analysis. For best results, use a quiet room and hold the phone near your baby.</p>
+        <div class="home-actions-row">
+          <button type="button" class="btn btn-outline btn-icon" id="homeBtnChooseFile" aria-label="Choose audio file">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload file
+          </button>
+          <button type="button" class="btn btn-blush btn-icon" id="homeBtnRecord" aria-label="Record with microphone">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            Record
+          </button>
+          <button type="button" class="btn btn-primary btn-icon" id="homeBtnAnalyze" aria-label="Analyze cry">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Analyze
+          </button>
+        </div>
+        <p class="home-file-hint" id="homeFileHint">No file selected yet. Upload or record on this page or open <strong>Analyze Cry</strong> for the full workspace.</p>
+        <p class="home-microcopy">WAV, MP3, M4A, and browser recordings are supported. Audio is sent only when you tap Analyze.</p>
+      </div>
 
-  <button class="analyze-btn" onclick="analyzeCry()">Analyze</button>
+      <div class="trust-grid">
+        <div class="trust-card"><span class="trust-emoji" aria-hidden="true">◇</span> Soft pastels &amp; calm layout for tired parents</div>
+        <div class="trust-card"><span class="trust-emoji" aria-hidden="true">◇</span> Models trained on infant cry data (Kaggle workflows)</div>
+        <div class="trust-card"><span class="trust-emoji" aria-hidden="true">◇</span> Flask API — same ML you already use</div>
+      </div>
+    </section>
 
-  <div id="waveform"></div>
+    <!-- ——— ANALYZE (full workspace) ——— -->
+    <section id="page-analyze" class="page is-hidden" aria-labelledby="analyze-heading">
+      <div class="panel">
+        <h1 id="analyze-heading" class="page-title">Analyze cry</h1>
+        <p class="page-intro">
+          Capture a few seconds of clear cry audio. We&rsquo;ll classify the sound, then run your existing model on <strong>POST /predict</strong> — no changes to your trained weights.
+        </p>
 
-</div>
+        <div class="analyze-grid">
+          <div class="card input-stack">
+            <h2 class="card-title"><span class="step-num">1</span> Add audio</h2>
+            <label class="file-drop" id="fileDropLabel">
+              <input type="file" id="audioFile" accept="audio/*,.wav,.mp3,.m4a,.webm,.ogg,audio/*" class="visually-hidden"/>
+              <span class="file-drop-icon" aria-hidden="true">♪</span>
+              <span class="file-drop-text"><strong>Tap to browse</strong> or drop a file</span>
+              <span class="file-drop-hint" id="fileNameDisplay">No file selected</span>
+            </label>
 
-<!-- LOADING -->
-<div id="loadingScreen" class="screen hidden">
-  <div class="spinner"></div>
-  <p>Analyzing...</p>
-</div>
+            <div class="record-row">
+              <button type="button" class="btn btn-record" id="recordBtn" aria-pressed="false">
+                <span class="rec-dot" aria-hidden="true"></span>
+                Record from microphone
+              </button>
+              <button type="button" class="btn btn-outline is-hidden" id="stopBtn">Stop recording</button>
+            </div>
+            <p class="mic-hint" id="recordStatus">Microphone is off until you start recording.</p>
+          </div>
 
-<!-- RESULT -->
-<div id="resultScreen" class="screen hidden">
+          <div class="card wave-card">
+            <h2 class="card-title"><span class="step-num">2</span> Preview</h2>
+            <div id="waveform" class="waveform-host" role="region" aria-label="Waveform preview"></div>
+            <p class="wave-hint">Waveform appears after you choose a file or finish recording.</p>
+          </div>
+        </div>
 
-  <img id="resultImage" style="display:none;" alt="Cry result image">
+        <button type="button" class="btn btn-primary btn-block btn-analyze" id="analyzeBtn">Run analysis</button>
+      </div>
+    </section>
 
-  <h3 id="cryType"></h3>
-  <p id="cause"></p>
-  <p><b>Cry Intensity:</b> <span id="confValue"></span></p>
+    <!-- ——— LOADING ——— -->
+    <section id="page-loading" class="page is-hidden page-loading" aria-live="polite" aria-busy="true">
+      <div class="loading-card card">
+        <div class="spinner" role="presentation"></div>
+        <p class="loading-title">Analyzing audio&hellip;</p>
+        <p class="loading-sub">Please keep this tab open. This usually takes a few seconds.</p>
+      </div>
+    </section>
 
-  <button onclick="showScreen('inputScreen')">⬅ Back</button>
+    <!-- ——— RESULT (dedicated full screen) ——— -->
+    <section id="page-result" class="page is-hidden page-result-full" aria-labelledby="predictionCategory">
+      <div class="result-shell card result-card-elevated">
+        <div class="result-visual-hero">
+          <img id="resultImage" class="result-hero-img" src="" alt="" loading="lazy"/>
+        </div>
 
-</div>
+        <div class="result-body">
+          <span class="badge" id="resultBadge">Result</span>
+          <p class="prediction-category" id="predictionCategory">—</p>
+          <h1 id="cryType" class="result-title">—</h1>
+          <p class="result-subtitle" id="resultSubtitle"></p>
 
-<!-- HISTORY -->
-<div id="historyScreen" class="screen hidden">
-  <h3>History</h3>
-  <ul id="historyList"></ul>
-</div>
+          <div class="confidence-panel">
+            <div class="confidence-panel-head">
+              <span class="meta-label">Confidence</span>
+              <span class="confidence-pct" id="confValue">—</span>
+            </div>
+            <div class="confidence-bar confidence-bar-lg" id="confidenceBarWrap" aria-hidden="true">
+              <div class="confidence-bar-fill" id="confidenceBarFill" style="width:0%"></div>
+            </div>
+            <div class="result-meta-inline">
+              <span class="meta-label">Analyzed at</span>
+              <time class="meta-value" id="resultTime">—</time>
+            </div>
+          </div>
 
-<!-- ABOUT -->
-<div id="aboutScreen" class="screen hidden">
-  <h3>About</h3>
-  <p>
-    This system analyzes infant cry audio using machine learning to detect asphyxia and predict possible causes.
-  </p>
-</div>
+          <div class="cause-card is-hidden" id="causeBlock">
+            <h2 class="cause-card-title">Possible cause</h2>
+            <p class="cause-card-value" id="causeText"></p>
+            <p class="cause-card-note" id="causeDisclaimer"></p>
+          </div>
 
-</div>
+          <div class="care-guidance-card">
+            <h2 class="care-guidance-title">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+              Prevention &amp; what to do now
+            </h2>
+            <ul class="guidance-list guidance-list-care" id="guidanceList"></ul>
+          </div>
 
-<!-- ✅ SCRIPTS AT BOTTOM -->
-<script src="/static/js/wavesurfer.js"></script>
-<script src="/static/script.js"></script>
+          <div class="safety-callout" role="note">
+            <strong>Safety note.</strong> This tool is assistive only and not a replacement for professional medical care. If you worry about breathing, skin color, responsiveness, fever, or feeding—especially with <strong>asphyxia-related results</strong>—seek urgent clinical help.
+          </div>
 
+          <div class="result-actions">
+            <button type="button" class="btn btn-primary" data-page="analyze">New analysis</button>
+            <button type="button" class="btn btn-outline" data-page="home">Home</button>
+            <button type="button" class="btn btn-ghost" data-page="history">History</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— RESULTS TAB (last run or empty) ——— -->
+    <section id="page-results" class="page is-hidden" aria-labelledby="results-heading">
+      <div class="panel">
+        <h1 id="results-heading" class="page-title">Results</h1>
+        <p class="page-intro">Review your most recent analysis. Run a new one from Home or Analyze Cry anytime.</p>
+
+        <div id="resultsEmpty" class="card results-empty">
+          <p class="results-empty-title">No result yet</p>
+          <p class="results-empty-text">After you analyze a cry, your latest prediction will appear here and under this tab.</p>
+          <button type="button" class="btn btn-primary" data-page="analyze">Go to Analyze Cry</button>
+        </div>
+
+        <div id="resultsSummary" class="card results-summary is-hidden">
+          <div class="results-summary-grid">
+            <div>
+              <span class="meta-label">Last outcome</span>
+              <p class="results-summary-main" id="resultsSummaryLabel">—</p>
+              <p class="results-summary-sub" id="resultsSummarySub">—</p>
+            </div>
+            <div>
+              <span class="meta-label">Confidence</span>
+              <p class="results-summary-main" id="resultsSummaryConf">—</p>
+            </div>
+            <div>
+              <span class="meta-label">Possible cause</span>
+              <p class="results-summary-main" id="resultsSummaryCause">—</p>
+            </div>
+            <div>
+              <span class="meta-label">Date</span>
+              <p class="results-summary-main" id="resultsSummaryDate">—</p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" data-page="result" id="btnViewFullResult">View full result screen</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— HISTORY ——— -->
+    <section id="page-history" class="page is-hidden" aria-labelledby="history-heading">
+      <div class="panel">
+        <h1 id="history-heading" class="page-title">History</h1>
+        <p class="page-intro">Saved on this device only. Clearing browser data removes this list.</p>
+        <div class="card history-wrap">
+          <div id="historyEmpty" class="history-empty">No analyses yet. Start from <button type="button" class="linkish" data-page="analyze">Analyze Cry</button>.</div>
+          <div class="history-table-wrap" id="historyTableWrap" hidden>
+            <table class="history-table" aria-label="Analysis history">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Confidence</th>
+                  <th scope="col">Cause</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody"></tbody>
+            </table>
+          </div>
+          <ul class="history-list history-cards-mobile" id="historyList" hidden></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— ABOUT ——— -->
+    <section id="page-about" class="page is-hidden" aria-labelledby="about-heading">
+      <div class="panel about-panel card about-card">
+        <h1 id="about-heading" class="page-title">About</h1>
+        <div class="prose">
+          <p><strong>Infant Cry Analyzer</strong> is a parent-friendly web application that connects to your existing <strong>Flask</strong> backend and <strong>Kaggle-trained</strong> machine learning models for infant cry analysis.</p>
+          <p>It is designed <strong>only for infants below one year of age</strong>. Outputs are probabilistic and depend on recording quality.</p>
+          <p><strong>This is not a replacement for medical advice, diagnosis, or emergency care.</strong> Always consult your pediatrician or local emergency services when you are concerned about your baby.</p>
+        </div>
+        <div class="footer-mini-links">
+          <span class="muted">More:</span>
+          <button type="button" class="linkish" data-page="how">How it works</button>
+          <span class="muted">·</span>
+          <button type="button" class="linkish" data-page="emergency">Emergency guidance</button>
+          <span class="muted">·</span>
+          <button type="button" class="linkish" data-page="contact">Contact / help</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-how" class="page is-hidden" aria-labelledby="how-heading">
+      <div class="panel prose card">
+        <h1 id="how-heading" class="page-title">How it works</h1>
+        <ol class="steps">
+          <li><strong>Capture sound</strong> — Upload or record a short cry clip.</li>
+          <li><strong>Audio check</strong> — The server distinguishes baby cry, adult speech, noise, unclear audio, or silence.</li>
+          <li><strong>Risk layer</strong> — Your existing RF model scores asphyxia-related risk with the same thresholds and features.</li>
+          <li><strong>Care hints</strong> — If risk is below threshold, you may see a possible everyday cause (heuristic) plus guidance.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="page-emergency" class="page is-hidden" aria-labelledby="emergency-heading">
+      <div class="panel prose card emergency-card">
+        <h1 id="emergency-heading" class="page-title">Emergency guidance</h1>
+        <p><strong>Call your local emergency number</strong> if your baby is struggling to breathe, turning blue or gray, is unresponsive, has a seizure, or you believe their life is at risk.</p>
+        <p><strong>Seek urgent medical advice</strong> for persistent high fever in a young infant, poor feeding with dehydration signs, repeated vomiting, blood in stool, or inconsolable crying that is very unlike usual—especially with lethargy or a bulging fontanelle.</p>
+        <p>This app cannot detect all emergencies. Trust your instincts and your clinician.</p>
+      </div>
+    </section>
+
+    <section id="page-contact" class="page is-hidden" aria-labelledby="contact-heading">
+      <div class="panel prose card">
+        <h1 id="contact-heading" class="page-title">Contact / Help</h1>
+        <p>For deployment or technical issues, contact your maintainer. For health concerns about your child, use your pediatrician or nurse line—not this tool.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Infant Cry Analyzer · Infants under 1 year · Assistive ML only — not a medical device</p>
+  </footer>
+
+  <script src="/static/js/wavesurfer.js"></script>
+  <script src="/static/script.js?v=6"></script>
 </body>
 </html>
