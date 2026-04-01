@@ -759,103 +759,34 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    import traceback
-
-    temp_original = None
-    temp_path = None
-    request_started = perf_counter()
-
     try:
-        print("=== REQUEST RECEIVED ===")
+        print("=== TEST START ===")
 
-        # ✅ Check file
         if "file" not in request.files:
-            print("No file in request")
-            return jsonify({
-                "error": "No file uploaded"
-            }), 400
+            return jsonify({"error": "No file"}), 400
 
         file = request.files["file"]
+        print("File:", file.filename)
 
-        if file.filename == "":
-            print("Empty filename")
-            return jsonify({
-                "error": "Empty file"
-            }), 400
-
-        print("File received:", file.filename)
-
-        # ✅ Save original file
-        temp_original = os.path.join(TEMP_DIR, f"{uuid.uuid4().hex}")
-        file.save(temp_original)
-
-        print("Saved original file:", temp_original)
-
-        # ✅ Convert to WAV
         temp_path = os.path.join(TEMP_DIR, f"{uuid.uuid4().hex}.wav")
+        file.save(temp_path)
 
-        print("Converting to WAV...")
+        print("Saved:", temp_path)
 
-        print("Converting using librosa...")
-
-        y, sr = librosa.load(temp_original, sr=SR)
-
-        import soundfile as sf
-        sf.write(temp_path, y, SR)
-
-        print("Conversion done:", temp_path)
-
-        # ✅ Load + preprocess
-        print("Loading audio...")
-        full_audio = preprocess_audio(load_audio(temp_path))
+        # 🔥 JUST TEST LOADING (NO MODEL YET)
+        y, sr = librosa.load(temp_path, sr=16000)
 
         print("Audio loaded successfully")
 
-        # ✅ Analyze
-        print("Running analysis...")
-        result = analyze_audio(full_audio)
-
-        print("Analysis complete:", result)
-
-        # ✅ Timing
-        elapsed_ms = round((perf_counter() - request_started) * 1000, 1)
-
-        predicted_class = result.get("cry_type") or result.get("status") or "unknown"
-
-        log_debug_summary("prediction_timing", {
-            "prediction_time_ms": elapsed_ms,
-            "predicted_class": predicted_class,
-            "confidence": round(float(result.get("confidence", 0.0)), 3),
-            "top_predictions": result.get("top_predictions", []),
+        return jsonify({
+            "status": "success",
+            "length": len(y)
         })
 
-        result["prediction_time_ms"] = elapsed_ms
-        result["analyzed_at"] = datetime.now(timezone.utc).isoformat()
-
-        return jsonify(result), 200
-
     except Exception as e:
-        print("=== ERROR OCCURRED ===")
-        print(str(e))
-        traceback.print_exc()   # 🔥 VERY IMPORTANT
-
-        return jsonify({
-            "error": str(e),   # 🔥 now frontend will see real error
-            "classification": "Error",
-            "confidence": 0,
-            "analyzed_at": datetime.now(timezone.utc).isoformat(),
-        }), 500
-
-    finally:
-        # ✅ Cleanup
-        try:
-            if temp_original and os.path.exists(temp_original):
-                os.remove(temp_original)
-            if temp_path and os.path.exists(temp_path):
-                os.remove(temp_path)
-        except Exception as cleanup_error:
-            print("Cleanup error:", cleanup_error)
-
+        print("ERROR:", str(e))
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/<path:path>")
 def spa_client_routes(path):
@@ -870,6 +801,18 @@ def spa_client_routes(path):
         return send_file(target)
     return send_file(spa_index)
 
+from flask import jsonify
+import traceback
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    print("=== GLOBAL ERROR ===")
+    print(str(e))
+    traceback.print_exc()
+
+    return jsonify({
+        "error": str(e)
+    }), 500
 
 if __name__ == "__main__":
     port = 7860
