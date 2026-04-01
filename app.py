@@ -759,58 +759,99 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    import traceback
+
     temp_original = None
     temp_path = None
     request_started = perf_counter()
 
     try:
+        print("=== REQUEST RECEIVED ===")
+
+        # ✅ Check file
         if "file" not in request.files:
+            print("No file in request")
             return jsonify({
-                "classification": "Invalid Input",
-                "confidence": 0,
-                "analyzed_at": datetime.now(timezone.utc).isoformat(),
-            })
+                "error": "No file uploaded"
+            }), 400
 
         file = request.files["file"]
+
+        if file.filename == "":
+            print("Empty filename")
+            return jsonify({
+                "error": "Empty file"
+            }), 400
+
+        print("File received:", file.filename)
+
+        # ✅ Save original file
         temp_original = os.path.join(TEMP_DIR, f"{uuid.uuid4().hex}")
         file.save(temp_original)
 
+        print("Saved original file:", temp_original)
+
+        # ✅ Convert to WAV
         temp_path = os.path.join(TEMP_DIR, f"{uuid.uuid4().hex}.wav")
+
+        print("Converting to WAV...")
 
         audio = AudioSegment.from_file(temp_original)
         audio = audio.set_channels(1).set_frame_rate(SR)
         audio.export(temp_path, format="wav")
 
+        print("Conversion done:", temp_path)
+
+        # ✅ Load + preprocess
+        print("Loading audio...")
         full_audio = preprocess_audio(load_audio(temp_path))
+
+        print("Audio loaded successfully")
+
+        # ✅ Analyze
+        print("Running analysis...")
         result = analyze_audio(full_audio)
+
+        print("Analysis complete:", result)
+
+        # ✅ Timing
         elapsed_ms = round((perf_counter() - request_started) * 1000, 1)
+
         predicted_class = result.get("cry_type") or result.get("status") or "unknown"
+
         log_debug_summary("prediction_timing", {
             "prediction_time_ms": elapsed_ms,
             "predicted_class": predicted_class,
             "confidence": round(float(result.get("confidence", 0.0)), 3),
             "top_predictions": result.get("top_predictions", []),
         })
+
         result["prediction_time_ms"] = elapsed_ms
         result["analyzed_at"] = datetime.now(timezone.utc).isoformat()
-        return jsonify(result)
+
+        return jsonify(result), 200
 
     except Exception as e:
-        print(e)
+        print("=== ERROR OCCURRED ===")
+        print(str(e))
+        traceback.print_exc()   # 🔥 VERY IMPORTANT
+
         return jsonify({
+            "error": str(e),   # 🔥 now frontend will see real error
             "classification": "Error",
             "confidence": 0,
             "analyzed_at": datetime.now(timezone.utc).isoformat(),
-        })
+        }), 500
 
     finally:
+        # ✅ Cleanup
         try:
             if temp_original and os.path.exists(temp_original):
                 os.remove(temp_original)
             if temp_path and os.path.exists(temp_path):
                 os.remove(temp_path)
-        except Exception:
-            pass
+        except Exception as cleanup_error:
+            print("Cleanup error:", cleanup_error)
 
 
 @app.route("/<path:path>")
