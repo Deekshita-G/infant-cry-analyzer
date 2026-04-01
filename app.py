@@ -13,6 +13,10 @@ import numpy as np
 from pydub import AudioSegment
 
 app = Flask(__name__)
+TEMP_DIR = "temp"
+
+import os
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, "models")
@@ -759,8 +763,10 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    import traceback
+
     try:
-        print("=== TEST START ===")
+        print("=== START ===")
 
         if "file" not in request.files:
             return jsonify({"error": "No file"}), 400
@@ -768,15 +774,22 @@ def predict():
         file = request.files["file"]
         print("File:", file.filename)
 
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        TEMP_DIR = os.path.join(BASE_DIR, "temp")
+        os.makedirs(TEMP_DIR, exist_ok=True)
+
         temp_path = os.path.join(TEMP_DIR, f"{uuid.uuid4().hex}.wav")
+
+        print("Saving file to:", temp_path)
+
         file.save(temp_path)
 
-        print("Saved:", temp_path)
+        print("File saved successfully")
 
-        # 🔥 JUST TEST LOADING (NO MODEL YET)
+        # TEST LOAD
         y, sr = librosa.load(temp_path, sr=16000)
 
-        print("Audio loaded successfully")
+        print("Audio loaded")
 
         return jsonify({
             "status": "success",
