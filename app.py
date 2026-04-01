@@ -796,9 +796,12 @@ def predict():
 
         print("Converting to WAV...")
 
-        audio = AudioSegment.from_file(temp_original)
-        audio = audio.set_channels(1).set_frame_rate(SR)
-        audio.export(temp_path, format="wav")
+        print("Converting using librosa...")
+
+        y, sr = librosa.load(temp_original, sr=SR)
+
+        import soundfile as sf
+        sf.write(temp_path, y, SR)
 
         print("Conversion done:", temp_path)
 
